@@ -1,0 +1,6 @@
+{
+  "name": "KuryenteCheck — Pinoy Bills & Wattage Reality Check",
+  "description": "Interactive Philippine household bills, appliance kWh simulator, Tipid What-If calculator, and daily Arawan burn-rate tracker.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
