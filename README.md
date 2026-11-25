@@ -1,11 +1,15 @@
 # Kuryente Check
 
-A lightweight, standalone web tool under **HandleVault Digital** designed to help you keep track of electricity usage and estimate bills without heavy setup.
+**Fast, lightweight, and zero install—check power/electricity right in your browser.**
 
-## Features
-- Built as a single-file, low-footprint web app (`index.html`).
-- Stores local user inputs in browser `localStorage` (no backend bloat).
-- Isolated in its own repository so updates never affect other HandleVault Digital tools.
+A web-based tool built with **HTML** and **TypeScript** for quick, clear power checking without heavy setup. Part of **HandleVault Digital**.
 
-## Support
-Free to use. If it helps and you have extra to spare (*"pag may pera na o nakaluwag"*), you can support via Ko-fi: https://ko-fi.com/handlevaultofficial
+## Why Use It?
+* **Instant Web Access:** Open in any browser whenever you need it—no app installation required.
+* **Built with HTML & TypeScript:** Lightweight, fast-loading, and clean logic flow.
+* **Straight to the Point:** Easy to understand and use even when you're in a hurry.
+
+## Suporta
+Kung nakakatulong sa'yo ang **Kuryente Check** mula sa **HandleVault Digital**, puwede mo kaming suportahan sa Ko-fi:
+* **Ko-fi:** https://ko-fi.com/handlevaultofficial
+
