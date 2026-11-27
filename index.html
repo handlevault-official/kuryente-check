@@ -2343,12 +2343,21 @@
       @media print {
         @page {
           size: A4 portrait;
-          margin: 14mm;
+          margin: 16mm;
         }
 
+        html,
         body {
+          width: 100% !important;
+          min-height: 100% !important;
+          margin: 0 !important;
+          padding: 0 !important;
           background: #ffffff !important;
           color: #0f172a !important;
+        }
+
+        body > *:not(#pdfSlipModal) {
+          display: none !important;
         }
 
         .topbar,
@@ -2363,27 +2372,44 @@
         }
 
         #pdfSlipModal {
-          display: block !important;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
           position: static !important;
           inset: auto !important;
-          background: transparent !important;
+          width: 100% !important;
+          min-height: calc(297mm - 32mm) !important;
+          background: #ffffff !important;
+          backdrop-filter: none !important;
           padding: 0 !important;
+          margin: 0 auto !important;
         }
 
         #pdfSlipModal .scanner-modal {
-          max-width: 100% !important;
+          width: 100% !important;
+          max-width: 170mm !important;
           max-height: none !important;
           overflow: visible !important;
           border: none !important;
           box-shadow: none !important;
           padding: 0 !important;
+          margin: 0 auto !important;
           background: transparent !important;
         }
 
+        #paymentSlipCard,
         .payment-slip-card {
+          width: 100% !important;
+          max-width: 170mm !important;
+          margin: 0 auto !important;
           box-shadow: none !important;
           border: 1.5px solid #0f172a !important;
-          padding: 20px !important;
+          border-radius: 6px !important;
+          padding: 24px 26px !important;
+          background: #ffffff !important;
+          color: #0f172a !important;
+          page-break-inside: avoid !important;
+          break-inside: avoid !important;
           -webkit-print-color-adjust: exact;
           print-color-adjust: exact;
         }
@@ -2690,6 +2716,429 @@
         border-color: rgba(5, 150, 105, 0.3);
         background-color: rgba(5, 150, 105, 0.08);
         color: var(--status-good);
+      }
+
+      .qr-due-reminder-bar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px 12px;
+        padding: 9px 12px;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--border-hairline);
+        background-color: var(--bg-subtle);
+        font-size: 12px;
+        color: var(--text-secondary);
+      }
+
+      .qr-due-reminder-bar.is-urgent {
+        border-color: rgba(217, 119, 6, 0.45);
+        background-color: rgba(217, 119, 6, 0.1);
+        color: var(--text-primary);
+      }
+
+      .qr-due-reminder-bar.is-clear {
+        border-color: rgba(5, 150, 105, 0.3);
+        background-color: rgba(5, 150, 105, 0.07);
+      }
+
+      .qr-due-reminder-actions {
+        display: inline-flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .qr-history-filter-bar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px 12px;
+      }
+
+      .qr-history-filter-left {
+        display: inline-flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .qr-history-filter-label {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--text-secondary);
+      }
+
+      .qr-history-filter-bar .segmented {
+        padding: 3px;
+        gap: 3px;
+        border-radius: 4px;
+      }
+
+      .qr-history-filter-bar .seg-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        min-height: 29px;
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+      }
+
+      .qr-status-filter-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+
+      .qr-status-filter-dot.is-pending {
+        background-color: var(--status-warn);
+      }
+
+      .qr-status-filter-dot.is-paid {
+        background-color: var(--status-good);
+      }
+
+      .qr-history-filter-meta {
+        font-size: 12px;
+        color: var(--text-muted);
+        font-weight: 500;
+      }
+
+      .qr-tag-filter-bar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 10px;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--border-hairline);
+        background-color: var(--bg-subtle);
+      }
+
+      .qr-tag-filter-bar[hidden] {
+        display: none;
+      }
+
+      .qr-tag-filter-label {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--text-secondary);
+        margin-right: 2px;
+      }
+
+      .qr-note-tag-btn,
+      .qr-tag-filter-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 2px 7px;
+        border-radius: 4px;
+        border: 1px solid rgba(5, 150, 105, 0.3);
+        background-color: var(--accent-soft);
+        color: var(--accent);
+        font-size: 11px;
+        font-weight: 700;
+        line-height: 1.35;
+        cursor: pointer;
+        transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
+      }
+
+      .qr-note-tag-btn {
+        padding: 1px 5px;
+        font-size: 10.5px;
+        vertical-align: baseline;
+      }
+
+      .qr-tag-filter-btn:hover,
+      .qr-note-tag-btn:hover {
+        border-color: var(--accent);
+        background-color: rgba(5, 150, 105, 0.18);
+      }
+
+      .qr-tag-filter-btn.is-all {
+        border-color: var(--border-strong);
+        background-color: var(--bg-surface);
+        color: var(--text-secondary);
+      }
+
+      .qr-tag-filter-btn.is-tag-urgent,
+      .qr-note-tag-btn.is-tag-urgent {
+        border-color: rgba(217, 119, 6, 0.42);
+        background-color: rgba(217, 119, 6, 0.1);
+        color: var(--status-warn);
+      }
+
+      .qr-tag-filter-btn.is-tag-urgent:hover,
+      .qr-note-tag-btn.is-tag-urgent:hover {
+        border-color: var(--status-warn);
+        background-color: rgba(217, 119, 6, 0.18);
+      }
+
+      .qr-tag-filter-btn.is-tag-good,
+      .qr-note-tag-btn.is-tag-good {
+        border-color: rgba(5, 150, 105, 0.38);
+        background-color: rgba(5, 150, 105, 0.09);
+        color: var(--status-good);
+      }
+
+      .qr-tag-filter-btn.is-tag-good:hover,
+      .qr-note-tag-btn.is-tag-good:hover {
+        border-color: var(--status-good);
+        background-color: rgba(5, 150, 105, 0.17);
+      }
+
+      .qr-tag-filter-btn.active,
+      .qr-note-tag-btn.active {
+        border-color: var(--accent);
+        background-color: var(--accent);
+        color: #ffffff;
+      }
+
+      .qr-tag-filter-btn.is-tag-urgent.active,
+      .qr-note-tag-btn.is-tag-urgent.active {
+        border-color: var(--status-warn);
+        background-color: var(--status-warn);
+        color: #ffffff;
+      }
+
+      .qr-tag-filter-btn.is-tag-good.active,
+      .qr-note-tag-btn.is-tag-good.active {
+        border-color: var(--status-good);
+        background-color: var(--status-good);
+        color: #ffffff;
+      }
+
+      .qr-tag-filter-btn.is-all.active {
+        border-color: var(--text-primary);
+        background-color: var(--text-primary);
+        color: var(--bg-surface);
+      }
+
+      .qr-notes-quick-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 6px 10px;
+      }
+
+      .qr-notes-quick-tags {
+        display: inline-flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .qr-quick-tag-btn {
+        padding: 2px 7px;
+        border-radius: 4px;
+        border: 1px dashed var(--border-strong);
+        background-color: var(--bg-surface);
+        color: var(--text-secondary);
+        font-size: 11px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: border-color 140ms ease, color 140ms ease, background-color 140ms ease;
+      }
+
+      .qr-quick-tag-btn:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+        background-color: var(--accent-soft);
+      }
+
+      .qr-notes-draft-tags {
+        font-size: 11px;
+        color: var(--text-muted);
+      }
+
+      .qr-autopaid-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: 10px 12px;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--border-hairline);
+        background-color: var(--bg-subtle);
+      }
+
+      .qr-autopaid-head {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 6px 12px;
+      }
+
+      .qr-autopaid-list {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .qr-autopaid-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 8px;
+        border-radius: 4px;
+        border: 1px solid var(--border-strong);
+        background-color: var(--bg-surface);
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--text-secondary);
+        cursor: pointer;
+        user-select: none;
+        transition: border-color 140ms ease, background-color 140ms ease, color 140ms ease;
+      }
+
+      .qr-autopaid-chip.is-enabled {
+        border-color: rgba(5, 150, 105, 0.45);
+        background-color: rgba(5, 150, 105, 0.1);
+        color: var(--status-good);
+      }
+
+      .qr-autopaid-chip input[type="checkbox"] {
+        width: 13px;
+        height: 13px;
+        margin: 0;
+        accent-color: var(--status-good);
+        cursor: pointer;
+      }
+
+      .qr-autopaid-remove {
+        border: none;
+        background: transparent;
+        color: var(--text-muted);
+        padding: 0 2px;
+        font-size: 13px;
+        line-height: 1;
+        cursor: pointer;
+      }
+
+      .qr-autopaid-remove:hover {
+        color: var(--status-alert);
+      }
+
+      .qr-autopaid-tag {
+        display: inline-flex;
+        align-items: center;
+        padding: 1px 5px;
+        border-radius: 4px;
+        border: 1px solid rgba(5, 150, 105, 0.35);
+        background-color: rgba(5, 150, 105, 0.09);
+        color: var(--status-good);
+        font-size: 10px;
+        font-weight: 700;
+        line-height: 1.4;
+        white-space: nowrap;
+      }
+
+      .qr-autopaid-form {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .qr-autopaid-form .input {
+        flex: 1;
+        min-width: 180px;
+        min-height: 32px;
+        padding: 4px 9px;
+        font-size: 12px;
+      }
+
+      .qr-notes-entry-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        padding: 10px 12px;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--border-hairline);
+        background-color: var(--bg-subtle);
+      }
+
+      .qr-notes-entry-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+
+      .qr-notes-textarea {
+        width: 100%;
+        min-height: 54px;
+        max-height: 110px;
+        resize: vertical;
+        padding: 7px 10px;
+        font-size: 12px;
+        line-height: 1.45;
+        font-family: var(--font-sans);
+      }
+
+      .qr-entry-note-wrap {
+        margin-top: 4px;
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        max-width: 255px;
+        white-space: normal;
+      }
+
+      .qr-entry-note-line {
+        font-size: 11px;
+        line-height: 1.4;
+        color: var(--text-secondary);
+        background-color: var(--bg-subtle);
+        border: 1px solid var(--border-hairline);
+        border-radius: 4px;
+        padding: 3px 6px;
+        word-break: break-word;
+      }
+
+      .qr-note-action-btn {
+        align-self: flex-start;
+        border: none;
+        background: transparent;
+        padding: 0;
+        font-size: 10.5px;
+        font-weight: 700;
+        color: var(--accent);
+        cursor: pointer;
+      }
+
+      .qr-note-action-btn:hover {
+        text-decoration: underline;
+      }
+
+      .qr-inline-note-editor {
+        margin-top: 4px;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        min-width: 200px;
+        max-width: 250px;
+      }
+
+      .qr-inline-note-editor textarea {
+        width: 100%;
+        min-height: 46px;
+        padding: 5px 7px;
+        font-size: 11px;
+        line-height: 1.35;
+        resize: vertical;
+      }
+
+      .qr-inline-note-actions {
+        display: flex;
+        align-items: center;
+        gap: 6px;
       }
 
       .scanner-viewport {
@@ -3975,7 +4424,15 @@
 
         <div class="no-print" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 10px;">
           <button type="button" id="cancelPdfSlipBtn" class="btn btn-secondary btn-sm">Close</button>
-          <button type="button" id="printPdfSlipBtn" class="btn btn-primary btn-sm">Print / Save as PDF</button>
+          <button type="button" id="printPdfSlipBtn" class="btn btn-secondary btn-sm">Save as PDF</button>
+          <button type="button" id="printSlipBtn" class="btn btn-primary btn-sm">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="6 9 6 2 18 2 18 9"></polyline>
+              <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+              <rect x="6" y="14" width="12" height="8"></rect>
+            </svg>
+            <span>Print</span>
+          </button>
         </div>
       </div>
     </div>
@@ -3997,7 +4454,54 @@
           </button>
         </div>
 
+        <div id="qrDueReminderBar" class="qr-due-reminder-bar" role="status" aria-live="polite">
+          <span id="qrDueReminderText">Checking upcoming payment deadlines...</span>
+          <div class="qr-due-reminder-actions">
+            <button type="button" id="qrDueEnableNotifBtn" class="btn btn-secondary btn-sm" style="min-height: 30px; padding: 4px 9px; font-size: 11px;">Enable Browser Alerts</button>
+            <button type="button" id="qrDueCheckNowBtn" class="btn btn-ghost btn-sm" style="min-height: 30px; padding: 4px 9px; font-size: 11px;">Check Due Alerts</button>
+          </div>
+        </div>
+
+        <div class="qr-history-filter-bar">
+          <div class="qr-history-filter-left">
+            <span class="qr-history-filter-label">View Status:</span>
+            <div id="qrHistoryStatusFilterBar" class="segmented" role="group" aria-label="Filter QR payment history by status">
+              <button type="button" class="seg-btn active" data-qr-status-filter="all" aria-pressed="true">All (0)</button>
+              <button type="button" class="seg-btn" data-qr-status-filter="pending" aria-pressed="false">
+                <span class="qr-status-filter-dot is-pending" aria-hidden="true"></span>
+                <span>Pending (0)</span>
+              </button>
+              <button type="button" class="seg-btn" data-qr-status-filter="paid" aria-pressed="false">
+                <span class="qr-status-filter-dot is-paid" aria-hidden="true"></span>
+                <span>Paid (0)</span>
+              </button>
+            </div>
+          </div>
+          <span id="qrHistoryFilterMeta" class="qr-history-filter-meta">Showing all entries</span>
+        </div>
+
+        <div id="qrHistoryTagFilterBar" class="qr-tag-filter-bar" role="group" aria-label="Filter QR payment history by note tag" hidden></div>
+
         <div id="qrHistoryTableWrap" class="history-table-wrap" style="max-height: 245px; overflow-y: auto;"></div>
+
+        <div id="qrAutoPaidPanel" class="qr-autopaid-panel" aria-label="Recurring biller auto-mark paid settings">
+          <div class="qr-autopaid-head">
+            <span style="font-size: 12px; font-weight: 700; color: var(--text-primary);">Recurring Billers · Auto-Mark Paid</span>
+            <span class="meta-line" style="font-size: 11px;">Matching pending entries automatically mark Paid on their due date</span>
+          </div>
+          <div id="qrAutoPaidList" class="qr-autopaid-list"></div>
+          <form id="qrAutoPaidForm" class="qr-autopaid-form">
+            <input
+              id="qrAutoPaidInput"
+              type="text"
+              class="input"
+              maxlength="36"
+              placeholder="Add recurring biller name (e.g., Meralco, PLDT, Maynilad)"
+              aria-label="Recurring biller name for auto-mark paid"
+            />
+            <button type="submit" class="btn btn-secondary btn-sm" style="min-height: 32px; padding: 4px 10px; font-size: 11px;">Add Auto-Paid Biller</button>
+          </form>
+        </div>
 
         <div>
           <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
@@ -4005,6 +4509,33 @@
             <span id="qrHistoryTotalBadge" class="num" style="font-size: 12px; font-weight: 700; color: var(--accent);"></span>
           </div>
           <pre id="qrExportSummaryPre" class="summary-pre" style="max-height: 165px; font-size: 12px;"></pre>
+        </div>
+
+        <div id="qrNotesEntryPanel" class="qr-notes-entry-panel" aria-label="Payment notes for new QR history entry">
+          <div class="qr-notes-entry-head">
+            <div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px;">
+              <label for="qrHistoryPaymentNotesInput" style="font-size: 12px; font-weight: 700; color: var(--text-primary);">Payment Notes</label>
+              <span class="meta-line" style="font-size: 11px;">Add one note per line with #tags (e.g., #urgent, #reference)</span>
+            </div>
+            <span id="qrPaymentNotesCount" class="num" style="font-size: 11px; color: var(--text-muted);">0 / 240</span>
+          </div>
+          <textarea
+            id="qrHistoryPaymentNotesInput"
+            class="input qr-notes-textarea"
+            rows="3"
+            maxlength="240"
+            placeholder="Line 1: OR 12345 #reference&#10;Line 2: Pay before Friday #urgent"
+          ></textarea>
+          <div class="qr-notes-quick-row">
+            <div id="qrNotesQuickTags" class="qr-notes-quick-tags" aria-label="Insert note tag">
+              <span style="font-size: 11px; font-weight: 600; color: var(--text-muted);">Quick tags:</span>
+              <button type="button" class="qr-quick-tag-btn" data-insert-note-tag="#urgent">+ #urgent</button>
+              <button type="button" class="qr-quick-tag-btn" data-insert-note-tag="#reference">+ #reference</button>
+              <button type="button" class="qr-quick-tag-btn" data-insert-note-tag="#receipt">+ #receipt</button>
+              <button type="button" class="qr-quick-tag-btn" data-insert-note-tag="#follow-up">+ #follow-up</button>
+            </div>
+            <span id="qrNotesDraftTagPreview" class="qr-notes-draft-tags"></span>
+          </div>
         </div>
 
         <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px;">
@@ -4047,6 +4578,7 @@
         const QR_PREFS_KEY = "kuryentecheck_qr_prefs_v1";
         const QR_HISTORY_KEY = "kuryentecheck_qr_history_v1";
         const QR_EXPORT_SUMMARY_KEY = "kuryentecheck_qr_export_summary_v1";
+        const QR_DUE_REMINDER_KEY = "kuryentecheck_qr_due_reminder_v1";
         const THEME_KEY = "kuryentecheck_theme_v1";
         const HISTORY_KEY = "kuryentecheck_history_v1";
 
@@ -4087,7 +4619,8 @@
             quickAmountMode: "full",
             quickAmountValue: null,
             accountRef: "Meralco · Sample CAN 1048-2910-55",
-            recentPayees: ["Meralco · Sample CAN 1048-2910-55"]
+            recentPayees: ["Meralco · Sample CAN 1048-2910-55"],
+            autoMarkPaidBillers: []
           },
           billAlerts: {
             enabled: true,
@@ -4180,6 +4713,21 @@
                 .slice(0, 5)
             : clone(DEFAULT_STATE.payQr.recentPayees);
 
+          const rawAutoPaid = Array.isArray(src.autoMarkPaidBillers) ? src.autoMarkPaidBillers : [];
+          const seenAutoKeys = new Set();
+          const autoMarkPaidBillers = [];
+          rawAutoPaid.forEach(function (name) {
+            if (typeof name !== "string") return;
+            const trimmed = name.trim();
+            if (!trimmed) return;
+            const key = trimmed.toLowerCase();
+            if (seenAutoKeys.has(key)) return;
+            seenAutoKeys.add(key);
+            if (autoMarkPaidBillers.length < 20) {
+              autoMarkPaidBillers.push(trimmed);
+            }
+          });
+
           return {
             wallet: wallet,
             lastActiveWallet: lastActiveWallet,
@@ -4188,7 +4736,8 @@
             quickAmountValue: quickAmountValue,
             accountRef: accountRef,
             dueDate: dueDate,
-            recentPayees: recentPayees
+            recentPayees: recentPayees,
+            autoMarkPaidBillers: autoMarkPaidBillers
           };
         }
 
@@ -4216,7 +4765,8 @@
                 quickAmountValue: payQr.quickAmountValue,
                 accountRef: payQr.accountRef,
                 dueDate: payQr.dueDate,
-                recentPayees: payQr.recentPayees
+                recentPayees: payQr.recentPayees,
+                autoMarkPaidBillers: payQr.autoMarkPaidBillers
               })
             );
           } catch (e) {
@@ -7795,7 +8345,8 @@
               return Object.assign({}, item, {
                 status: item.status === "paid" ? "paid" : "pending",
                 category: getQrBillerCategory(item).id,
-                dueDate: isValidIsoDateString(item.dueDate) ? item.dueDate : ""
+                dueDate: isValidIsoDateString(item.dueDate) ? item.dueDate : "",
+                notes: typeof item.notes === "string" ? item.notes.trim().slice(0, 240) : ""
               });
             });
           } catch (e) {
@@ -7830,6 +8381,13 @@
             const statusLabel = item.status === "paid" ? "Paid" : "Pending";
             const dueInfo = getQrDueDateInfo(item.dueDate, item.status);
             const duePart = dueInfo.hasDate ? " · Due " + dueInfo.formattedDate : "";
+            const cleanNoteLines = typeof item.notes === "string"
+              ? item.notes
+                  .split(/\r?\n/)
+                  .map(function (ln) { return ln.trim(); })
+                  .filter(Boolean)
+              : [];
+            const notePart = cleanNoteLines.length > 0 ? " | Notes: " + cleanNoteLines.join(" / ") : "";
             lines.push(
               (idx + 1) +
                 ". [" +
@@ -7845,7 +8403,8 @@
                 " [" +
                 item.dateText +
                 duePart +
-                "]"
+                "]" +
+                notePart
             );
           });
           return lines.join("\n");
@@ -7900,6 +8459,12 @@
           const rawDue = dueInputEl && typeof dueInputEl.value === "string" ? dueInputEl.value.trim() : payQr.dueDate || "";
           const dueDateIso = isValidIsoDateString(rawDue) ? rawDue : "";
 
+          const notesInputEl = document.getElementById("qrHistoryPaymentNotesInput");
+          const noteText =
+            notesInputEl && typeof notesInputEl.value === "string"
+              ? notesInputEl.value.trim().slice(0, 240)
+              : "";
+
           const nowMs = Date.now();
           const latest = qrPaymentHistory[0];
           if (
@@ -7908,6 +8473,7 @@
             latest.fullRef === parsed.fullRef &&
             latest.channel === channelName &&
             (latest.dueDate || "") === dueDateIso &&
+            (latest.notes || "") === noteText &&
             Math.abs(Number(latest.amount) - payAmount) < 0.01 &&
             nowMs - (Number(latest.createdAt) || 0) < 60000
           ) {
@@ -7931,6 +8497,7 @@
             channel: channelName,
             scope: scopeLabel,
             category: inferQrBillerCategoryId(parsed.billerName, parsed.fullRef, baseScopeLabel),
+            notes: noteText,
             amount: payAmount,
             status: "pending"
           };
@@ -7939,7 +8506,9 @@
           if (qrPaymentHistory.length > 30) {
             qrPaymentHistory = qrPaymentHistory.slice(0, 30);
           }
+          runQrAutoMarkPaidSweep(true);
           saveQrHistorySummaryToStorage();
+          checkQrDueDateReminders(false);
           return entry;
         }
 
@@ -8115,9 +8684,414 @@
         const clearQrHistoryBtnEl = document.getElementById("clearQrHistoryBtn");
         const confirmClearQrHistoryBtnEl = document.getElementById("confirmClearQrHistoryBtn");
         const deleteSelectedQrHistoryBtnEl = document.getElementById("deleteSelectedQrHistoryBtn");
+        const qrDueReminderBarEl = document.getElementById("qrDueReminderBar");
+        const qrDueReminderTextEl = document.getElementById("qrDueReminderText");
+        const qrDueEnableNotifBtnEl = document.getElementById("qrDueEnableNotifBtn");
+        const qrDueCheckNowBtnEl = document.getElementById("qrDueCheckNowBtn");
+        const qrAutoPaidListEl = document.getElementById("qrAutoPaidList");
+        const qrAutoPaidFormEl = document.getElementById("qrAutoPaidForm");
+        const qrAutoPaidInputEl = document.getElementById("qrAutoPaidInput");
+        const qrHistoryPaymentNotesInputEl = document.getElementById("qrHistoryPaymentNotesInput");
+        const qrPaymentNotesCountEl = document.getElementById("qrPaymentNotesCount");
+        const qrNotesQuickTagsEl = document.getElementById("qrNotesQuickTags");
+        const qrNotesDraftTagPreviewEl = document.getElementById("qrNotesDraftTagPreview");
+        const qrHistoryStatusFilterBarEl = document.getElementById("qrHistoryStatusFilterBar");
+        const qrHistoryTagFilterBarEl = document.getElementById("qrHistoryTagFilterBar");
+        const qrHistoryFilterMetaEl = document.getElementById("qrHistoryFilterMeta");
         const selectedQrHistoryIds = new Set();
+        let qrHistoryStatusFilter = "all";
+        let qrHistoryNoteTagFilter = "";
         let qrHistorySummaryCategory = "all";
+        let editingNoteQrHistoryId = null;
         let clearQrHistoryTimer = null;
+
+        function extractNoteTagsFromText(notesText) {
+          if (typeof notesText !== "string" || !notesText.trim()) return [];
+          const found = [];
+          const seen = new Set();
+          notesText.split(/\r?\n/).forEach(function (line) {
+            const matches = line.match(/(?:^|[\s,(])(#[a-zA-Z][a-zA-Z0-9_-]{0,27})/g);
+            if (!matches) return;
+            matches.forEach(function (rawMatch) {
+              const hashIdx = rawMatch.indexOf("#");
+              const tag = (hashIdx >= 0 ? rawMatch.slice(hashIdx) : rawMatch).toLowerCase();
+              if (!seen.has(tag)) {
+                seen.add(tag);
+                found.push(tag);
+              }
+            });
+          });
+          return found;
+        }
+
+        function getNoteTagVariantClass(tagKey) {
+          const clean = String(tagKey || "").toLowerCase();
+          if (clean === "#urgent" || clean === "#overdue" || clean === "#due" || clean === "#priority") {
+            return "is-tag-urgent";
+          }
+          if (clean === "#verified" || clean === "#paid" || clean === "#settled" || clean === "#confirmed") {
+            return "is-tag-good";
+          }
+          return "";
+        }
+
+        function updateQrNotesCharCount() {
+          if (!qrPaymentNotesCountEl || !qrHistoryPaymentNotesInputEl) return;
+          qrPaymentNotesCountEl.textContent = qrHistoryPaymentNotesInputEl.value.length + " / 240";
+          if (qrNotesDraftTagPreviewEl) {
+            const draftTags = extractNoteTagsFromText(qrHistoryPaymentNotesInputEl.value);
+            qrNotesDraftTagPreviewEl.textContent =
+              draftTags.length > 0 ? "Detected tags: " + draftTags.join(", ") : "";
+          }
+        }
+        if (qrHistoryPaymentNotesInputEl) {
+          qrHistoryPaymentNotesInputEl.addEventListener("input", updateQrNotesCharCount);
+          updateQrNotesCharCount();
+        }
+        if (qrNotesQuickTagsEl && qrHistoryPaymentNotesInputEl) {
+          qrNotesQuickTagsEl.addEventListener("click", function (e) {
+            const btn = e.target.closest("[data-insert-note-tag]");
+            if (!btn) return;
+            const tag = btn.getAttribute("data-insert-note-tag");
+            if (!tag) return;
+            const current = qrHistoryPaymentNotesInputEl.value;
+            const start =
+              typeof qrHistoryPaymentNotesInputEl.selectionStart === "number"
+                ? qrHistoryPaymentNotesInputEl.selectionStart
+                : current.length;
+            const end =
+              typeof qrHistoryPaymentNotesInputEl.selectionEnd === "number"
+                ? qrHistoryPaymentNotesInputEl.selectionEnd
+                : current.length;
+            const before = current.slice(0, start);
+            const after = current.slice(end);
+            const needsLeadingSpace = before.length > 0 && !/[\s\n]$/.test(before);
+            const needsTrailingSpace = after.length > 0 && !/^[\s\n]/.test(after);
+            const insertion = (needsLeadingSpace ? " " : "") + tag + (needsTrailingSpace ? " " : "");
+            const combined = (before + insertion + after).slice(0, 240);
+            qrHistoryPaymentNotesInputEl.value = combined;
+            const nextCursor = Math.min(combined.length, before.length + insertion.length);
+            qrHistoryPaymentNotesInputEl.focus();
+            qrHistoryPaymentNotesInputEl.setSelectionRange(nextCursor, nextCursor);
+            updateQrNotesCharCount();
+          });
+        }
+
+        function getLocalTodayIso() {
+          const now = new Date();
+          return (
+            now.getFullYear() +
+            "-" +
+            String(now.getMonth() + 1).padStart(2, "0") +
+            "-" +
+            String(now.getDate()).padStart(2, "0")
+          );
+        }
+
+        function normalizeBillerMatchKey(str) {
+          return String(str || "").trim().toLowerCase();
+        }
+
+        function getAutoMarkPaidBillersList() {
+          const raw =
+            state && state.payQr && Array.isArray(state.payQr.autoMarkPaidBillers)
+              ? state.payQr.autoMarkPaidBillers
+              : [];
+          return raw;
+        }
+
+        function isAutoMarkPaidBiller(billerName, fullRef) {
+          const list = getAutoMarkPaidBillersList();
+          if (list.length === 0) return false;
+          const normBiller = normalizeBillerMatchKey(billerName);
+          const normRef = normalizeBillerMatchKey(fullRef);
+          return list.some(function (recName) {
+            const key = normalizeBillerMatchKey(recName);
+            if (!key) return false;
+            return (
+              normBiller === key ||
+              (normBiller && normBiller.indexOf(key) !== -1) ||
+              (normRef && normRef.indexOf(key) !== -1)
+            );
+          });
+        }
+
+        function setAutoMarkPaidBillerEnabled(billerName, enabled) {
+          const cleanName = String(billerName || "").trim();
+          if (!cleanName) return;
+          const key = normalizeBillerMatchKey(cleanName);
+          const current = getAutoMarkPaidBillersList().slice();
+          const filtered = current.filter(function (name) {
+            return normalizeBillerMatchKey(name) !== key;
+          });
+          if (enabled) {
+            filtered.unshift(cleanName);
+            qrPaymentHistory.forEach(function (item) {
+              if (item && isAutoMarkPaidBillerMatchName(item.biller, item.fullRef, cleanName)) {
+                item.manualStatusOverride = false;
+              }
+            });
+          }
+          state.payQr.autoMarkPaidBillers = filtered.slice(0, 20);
+          saveState();
+        }
+
+        function isAutoMarkPaidBillerMatchName(billerName, fullRef, recName) {
+          const key = normalizeBillerMatchKey(recName);
+          if (!key) return false;
+          const normBiller = normalizeBillerMatchKey(billerName);
+          const normRef = normalizeBillerMatchKey(fullRef);
+          return (
+            normBiller === key ||
+            (normBiller && normBiller.indexOf(key) !== -1) ||
+            (normRef && normRef.indexOf(key) !== -1)
+          );
+        }
+
+        function runQrAutoMarkPaidSweep(showNotice) {
+          const todayIso = getLocalTodayIso();
+          let updatedCount = 0;
+          const updatedBillers = [];
+          qrPaymentHistory.forEach(function (item) {
+            if (!item || item.status === "paid" || item.manualStatusOverride) return;
+            if (!isValidIsoDateString(item.dueDate)) return;
+            if (item.dueDate > todayIso) return;
+            if (!isAutoMarkPaidBiller(item.biller, item.fullRef)) return;
+            item.status = "paid";
+            item.autoMarkedPaidAt = Date.now();
+            updatedCount += 1;
+            if (updatedBillers.indexOf(item.biller) === -1) {
+              updatedBillers.push(item.biller);
+            }
+          });
+          if (updatedCount > 0) {
+            saveQrHistorySummaryToStorage();
+            if (showNotice) {
+              showToast(
+                "Auto-marked " +
+                  updatedCount +
+                  " due payment" +
+                  (updatedCount === 1 ? "" : "s") +
+                  " as Paid (" +
+                  updatedBillers.join(", ") +
+                  ")",
+                3600
+              );
+            }
+          }
+          return updatedCount;
+        }
+
+        function renderQrAutoPaidPanel() {
+          if (!qrAutoPaidListEl) return;
+          const configured = getAutoMarkPaidBillersList();
+          const candidateMap = new Map();
+
+          configured.forEach(function (name) {
+            const key = normalizeBillerMatchKey(name);
+            if (key && !candidateMap.has(key)) {
+              candidateMap.set(key, { name: name, enabled: true, inHistory: false });
+            }
+          });
+
+          qrPaymentHistory.forEach(function (item) {
+            if (!item || !item.biller) return;
+            const key = normalizeBillerMatchKey(item.biller);
+            if (!key) return;
+            const matched = isAutoMarkPaidBiller(item.biller, item.fullRef);
+            if (candidateMap.has(key)) {
+              candidateMap.get(key).inHistory = true;
+            } else {
+              candidateMap.set(key, { name: item.biller, enabled: matched, inHistory: true });
+            }
+          });
+
+          const items = Array.from(candidateMap.values());
+          if (items.length === 0) {
+            qrAutoPaidListEl.innerHTML =
+              '<span style="font-size: 11px; color: var(--text-muted);">No recurring billers configured yet. Add a biller name below to enable Auto-Mark Paid on its due date.</span>';
+            return;
+          }
+
+          qrAutoPaidListEl.innerHTML = items
+            .map(function (entry) {
+              return (
+                '<label class="qr-autopaid-chip ' +
+                (entry.enabled ? "is-enabled" : "") +
+                '" title="' +
+                (entry.enabled
+                  ? "Auto-Mark Paid is ON for " + escapeHtml(entry.name)
+                  : "Enable Auto-Mark Paid for " + escapeHtml(entry.name)) +
+                '">' +
+                '<input type="checkbox" class="js-qr-autopaid-toggle" value="' +
+                escapeHtml(entry.name) +
+                '"' +
+                (entry.enabled ? " checked" : "") +
+                " />" +
+                "<span>" +
+                escapeHtml(entry.name) +
+                "</span>" +
+                (entry.enabled && !entry.inHistory
+                  ? '<button type="button" class="qr-autopaid-remove js-qr-autopaid-del" data-biller="' +
+                    escapeHtml(entry.name) +
+                    '" aria-label="Remove ' +
+                    escapeHtml(entry.name) +
+                    ' recurring rule" title="Remove">&times;</button>'
+                  : "") +
+                "</label>"
+              );
+            })
+            .join("");
+        }
+
+        function getUpcomingPendingQrDueEntries(withinDays) {
+          const maxDays = Number.isFinite(withinDays) ? withinDays : 2;
+          const now = new Date();
+          const todayLocal = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+          return qrPaymentHistory
+            .filter(function (item) {
+              if (!item || item.status === "paid") return false;
+              if (!isValidIsoDateString(item.dueDate)) return false;
+              const parts = item.dueDate.split("-").map(Number);
+              const dueLocal = new Date(parts[0], parts[1] - 1, parts[2]);
+              const daysDiff = Math.round((dueLocal.getTime() - todayLocal.getTime()) / 86400000);
+              return daysDiff <= maxDays;
+            })
+            .map(function (item) {
+              return {
+                entry: item,
+                dueInfo: getQrDueDateInfo(item.dueDate, item.status)
+              };
+            });
+        }
+
+        function loadQrDueReminderMeta() {
+          try {
+            const raw = localStorage.getItem(QR_DUE_REMINDER_KEY);
+            if (!raw) return {};
+            const parsed = JSON.parse(raw);
+            return parsed && typeof parsed === "object" ? parsed : {};
+          } catch (e) {
+            return {};
+          }
+        }
+
+        function saveQrDueReminderMeta(meta) {
+          try {
+            localStorage.setItem(QR_DUE_REMINDER_KEY, JSON.stringify(meta || {}));
+          } catch (e) {
+            /* Ignore storage errors */
+          }
+        }
+
+        function renderQrDueReminderBar(urgentList) {
+          const urgent = Array.isArray(urgentList) ? urgentList : getUpcomingPendingQrDueEntries(2);
+          if (qrDueReminderBarEl && qrDueReminderTextEl) {
+            if (urgent.length > 0) {
+              const preview = urgent
+                .slice(0, 2)
+                .map(function (u) {
+                  return u.entry.biller + " (" + u.dueInfo.badgeText + ")";
+                })
+                .join(", ");
+              const extra = urgent.length > 2 ? " +" + (urgent.length - 2) + " more" : "";
+              qrDueReminderBarEl.className = "qr-due-reminder-bar is-urgent";
+              qrDueReminderTextEl.textContent =
+                "Daily Due Alert: " +
+                urgent.length +
+                " pending payment" +
+                (urgent.length === 1 ? "" : "s") +
+                " within 2 days — " +
+                preview +
+                extra;
+            } else {
+              qrDueReminderBarEl.className = "qr-due-reminder-bar is-clear";
+              qrDueReminderTextEl.textContent =
+                "Daily Due Alert: No pending payments due within 2 days.";
+            }
+          }
+
+          if (qrDueEnableNotifBtnEl) {
+            const supportsNotif = typeof window !== "undefined" && "Notification" in window;
+            if (!supportsNotif) {
+              qrDueEnableNotifBtnEl.style.display = "none";
+            } else if (window.Notification.permission === "granted") {
+              qrDueEnableNotifBtnEl.style.display = "none";
+            } else if (window.Notification.permission === "denied") {
+              qrDueEnableNotifBtnEl.style.display = "inline-flex";
+              qrDueEnableNotifBtnEl.textContent = "Browser Alerts Blocked";
+              qrDueEnableNotifBtnEl.disabled = true;
+            } else {
+              qrDueEnableNotifBtnEl.style.display = "inline-flex";
+              qrDueEnableNotifBtnEl.textContent = "Enable Browser Alerts";
+              qrDueEnableNotifBtnEl.disabled = false;
+            }
+          }
+        }
+
+        function checkQrDueDateReminders(isManualCheck) {
+          runQrAutoMarkPaidSweep(false);
+          const urgent = getUpcomingPendingQrDueEntries(2);
+          renderQrDueReminderBar(urgent);
+
+          if (urgent.length === 0) {
+            if (isManualCheck) {
+              showToast("All clear: No pending QR payments due within 2 days.");
+            }
+            return 0;
+          }
+
+          const todayIso = getLocalTodayIso();
+          const meta = loadQrDueReminderMeta();
+          const title =
+            "KuryenteCheck · " +
+            urgent.length +
+            " Pending Payment" +
+            (urgent.length === 1 ? "" : "s") +
+            " Due Soon";
+          const details =
+            urgent
+              .slice(0, 3)
+              .map(function (u) {
+                return u.entry.biller + " (" + peso(u.entry.amount) + " · " + u.dueInfo.badgeText + ")";
+              })
+              .join(", ") + (urgent.length > 3 ? " +" + (urgent.length - 3) + " more" : "");
+
+          const supportsNotif = typeof window !== "undefined" && "Notification" in window;
+          const canBrowserNotif = supportsNotif && window.Notification.permission === "granted";
+
+          if (canBrowserNotif && (isManualCheck || meta.lastNotifiedDate !== todayIso)) {
+            try {
+              new window.Notification(title, {
+                body: details,
+                tag: "kuryentecheck-qr-due-daily-" + todayIso
+              });
+              saveQrDueReminderMeta(
+                Object.assign({}, meta, {
+                  lastNotifiedDate: todayIso,
+                  lastToastDate: todayIso,
+                  lastCount: urgent.length
+                })
+              );
+              showToast("Daily due alert sent: " + details, 3800);
+              return urgent.length;
+            } catch (err) {
+              /* Fall back to toast below */
+            }
+          }
+
+          if (isManualCheck || meta.lastToastDate !== todayIso) {
+            saveQrDueReminderMeta(
+              Object.assign({}, meta, {
+                lastToastDate: todayIso,
+                lastCount: urgent.length
+              })
+            );
+            showToast("Due within 2 days: " + details, 3800);
+          }
+
+          return urgent.length;
+        }
 
         function computeQrHistoryCategoryTotals(categoryId) {
           const catFilter = categoryId || "all";
@@ -8161,10 +9135,223 @@
           };
         }
 
+        function getAllQrNoteTagCounts() {
+          const tagMap = new Map();
+          qrPaymentHistory.forEach(function (item) {
+            const tags = extractNoteTagsFromText(item && item.notes ? item.notes : "");
+            tags.forEach(function (tag) {
+              tagMap.set(tag, (tagMap.get(tag) || 0) + 1);
+            });
+          });
+          return Array.from(tagMap.entries())
+            .map(function (entry) {
+              return { tag: entry[0], count: entry[1] };
+            })
+            .sort(function (a, b) {
+              if (b.count !== a.count) return b.count - a.count;
+              return a.tag.localeCompare(b.tag);
+            });
+        }
+
+        function formatQrNoteLineHtml(lineText, activeTag) {
+          const tagRegex = /(^|[\s,(])(#[a-zA-Z][a-zA-Z0-9_-]{0,27})/g;
+          let html = "";
+          let lastIndex = 0;
+          let match;
+          while ((match = tagRegex.exec(lineText)) !== null) {
+            const prefix = match[1] || "";
+            const tagDisplay = match[2];
+            const tagKey = tagDisplay.toLowerCase();
+            const matchStart = match.index;
+            if (matchStart > lastIndex) {
+              html += escapeHtml(lineText.slice(lastIndex, matchStart));
+            }
+            html += escapeHtml(prefix);
+            const variantCls = getNoteTagVariantClass(tagKey);
+            const isActive = activeTag === tagKey;
+            html +=
+              '<button type="button" class="qr-note-tag-btn js-qrhist-tag-btn' +
+              (variantCls ? " " + variantCls : "") +
+              (isActive ? " active" : "") +
+              '" data-qr-note-tag="' +
+              escapeHtml(tagKey) +
+              '" aria-pressed="' +
+              (isActive ? "true" : "false") +
+              '" title="' +
+              (isActive ? "Clear tag filter " + escapeHtml(tagKey) : "Filter table by " + escapeHtml(tagKey)) +
+              '">' +
+              escapeHtml(tagDisplay) +
+              "</button>";
+            lastIndex = tagRegex.lastIndex;
+          }
+          if (lastIndex < lineText.length) {
+            html += escapeHtml(lineText.slice(lastIndex));
+          }
+          return html;
+        }
+
+        function buildQrEntryNoteSectionHtml(item) {
+          const isEditingNote = editingNoteQrHistoryId === item.id;
+          const cleanNote = typeof item.notes === "string" ? item.notes.trim() : "";
+          if (isEditingNote) {
+            return (
+              '<div class="qr-inline-note-editor">' +
+              '<textarea class="input js-qrhist-note-textarea" rows="3" maxlength="240" placeholder="One note per line — add #urgent, #reference, etc.">' +
+              escapeHtml(cleanNote) +
+              "</textarea>" +
+              '<div class="qr-inline-note-actions">' +
+              '<button type="button" class="btn btn-primary btn-sm js-qrhist-save-note" style="min-height: 26px; padding: 2px 8px; font-size: 11px;">Save</button>' +
+              '<button type="button" class="btn btn-ghost btn-sm js-qrhist-cancel-note" style="min-height: 26px; padding: 2px 8px; font-size: 11px;">Cancel</button>' +
+              "</div></div>"
+            );
+          }
+
+          const noteLines = cleanNote
+            ? cleanNote
+                .split(/\r?\n/)
+                .map(function (ln) { return ln.trim(); })
+                .filter(Boolean)
+            : [];
+
+          const linesHtml = noteLines
+            .map(function (lineText, idx) {
+              const prefixHtml = idx === 0 ? "<strong>Note:</strong> " : "<strong>&bull;</strong> ";
+              return '<div class="qr-entry-note-line">' + prefixHtml + formatQrNoteLineHtml(lineText, qrHistoryNoteTagFilter) + "</div>";
+            })
+            .join("");
+
+          return (
+            '<div class="qr-entry-note-wrap">' +
+            linesHtml +
+            '<button type="button" class="qr-note-action-btn js-qrhist-edit-note">' +
+            (noteLines.length > 0 ? "Edit notes" : "+ Add note") +
+            "</button></div>"
+          );
+        }
+
+        function getFilteredQrPaymentHistory() {
+          return qrPaymentHistory.filter(function (item) {
+            if (qrHistoryStatusFilter === "pending" && item.status === "paid") {
+              return false;
+            }
+            if (qrHistoryStatusFilter === "paid" && item.status !== "paid") {
+              return false;
+            }
+            if (qrHistoryNoteTagFilter) {
+              const tags = extractNoteTagsFromText(item && item.notes ? item.notes : "");
+              if (tags.indexOf(qrHistoryNoteTagFilter) === -1) {
+                return false;
+              }
+            }
+            return true;
+          });
+        }
+
+        function renderQrHistoryStatusFilterBar() {
+          const allTags = getAllQrNoteTagCounts();
+          if (
+            qrHistoryNoteTagFilter &&
+            !allTags.some(function (t) { return t.tag === qrHistoryNoteTagFilter; })
+          ) {
+            qrHistoryNoteTagFilter = "";
+          }
+
+          const totalCount = qrPaymentHistory.length;
+          let paidCount = 0;
+          let pendingCount = 0;
+          qrPaymentHistory.forEach(function (item) {
+            if (item.status === "paid") {
+              paidCount += 1;
+            } else {
+              pendingCount += 1;
+            }
+          });
+          const counts = {
+            all: totalCount,
+            pending: pendingCount,
+            paid: paidCount
+          };
+
+          if (qrHistoryStatusFilterBarEl) {
+            qrHistoryStatusFilterBarEl.querySelectorAll("[data-qr-status-filter]").forEach(function (btn) {
+              const mode = btn.getAttribute("data-qr-status-filter");
+              const isActive = mode === qrHistoryStatusFilter;
+              btn.classList.toggle("active", isActive);
+              btn.setAttribute("aria-pressed", isActive ? "true" : "false");
+              const labelPrefix = mode === "pending" ? "Pending" : mode === "paid" ? "Paid" : "All";
+              const countText = labelPrefix + " (" + (counts[mode] || 0) + ")";
+              const spans = btn.querySelectorAll("span");
+              if (spans.length > 0) {
+                spans[spans.length - 1].textContent = countText;
+              } else {
+                btn.textContent = countText;
+              }
+            });
+          }
+
+          if (qrHistoryTagFilterBarEl) {
+            if (allTags.length === 0) {
+              qrHistoryTagFilterBarEl.hidden = true;
+              qrHistoryTagFilterBarEl.innerHTML = "";
+            } else {
+              qrHistoryTagFilterBarEl.hidden = false;
+              const allActive = !qrHistoryNoteTagFilter;
+              const tagButtonsHtml = allTags
+                .map(function (entry) {
+                  const isActive = qrHistoryNoteTagFilter === entry.tag;
+                  const variantCls = getNoteTagVariantClass(entry.tag);
+                  return (
+                    '<button type="button" class="qr-tag-filter-btn' +
+                    (variantCls ? " " + variantCls : "") +
+                    (isActive ? " active" : "") +
+                    '" data-qr-note-tag="' +
+                    escapeHtml(entry.tag) +
+                    '" aria-pressed="' +
+                    (isActive ? "true" : "false") +
+                    '">' +
+                    escapeHtml(entry.tag) +
+                    " (" +
+                    entry.count +
+                    ")</button>"
+                  );
+                })
+                .join("");
+              qrHistoryTagFilterBarEl.innerHTML =
+                '<span class="qr-tag-filter-label">Note Tags:</span>' +
+                '<button type="button" class="qr-tag-filter-btn is-all' +
+                (allActive ? " active" : "") +
+                '" data-qr-note-tag="" aria-pressed="' +
+                (allActive ? "true" : "false") +
+                '">All Tags</button>' +
+                tagButtonsHtml;
+            }
+          }
+
+          if (qrHistoryFilterMetaEl) {
+            const visibleCount = getFilteredQrPaymentHistory().length;
+            if (totalCount === 0) {
+              qrHistoryFilterMetaEl.textContent = "No entries recorded yet";
+            } else if (qrHistoryStatusFilter === "all" && !qrHistoryNoteTagFilter) {
+              qrHistoryFilterMetaEl.textContent =
+                "Showing all " + totalCount + " " + (totalCount === 1 ? "entry" : "entries");
+            } else {
+              const activeParts = [];
+              if (qrHistoryStatusFilter !== "all") {
+                activeParts.push(qrHistoryStatusFilter === "pending" ? "Pending" : "Paid");
+              }
+              if (qrHistoryNoteTagFilter) {
+                activeParts.push(qrHistoryNoteTagFilter);
+              }
+              qrHistoryFilterMetaEl.textContent =
+                "Showing " + visibleCount + " of " + totalCount + " (" + activeParts.join(" · ") + ")";
+            }
+          }
+        }
+
         function pruneSelectedQrHistoryIds() {
-          const validIds = new Set(qrPaymentHistory.map(function (item) { return item.id; }));
+          const visibleIds = new Set(getFilteredQrPaymentHistory().map(function (item) { return item.id; }));
           Array.from(selectedQrHistoryIds).forEach(function (id) {
-            if (!validIds.has(id)) {
+            if (!visibleIds.has(id)) {
               selectedQrHistoryIds.delete(id);
             }
           });
@@ -8173,7 +9360,8 @@
         function syncQrHistorySelectionUi() {
           pruneSelectedQrHistoryIds();
           const selectAllEl = document.getElementById("qrHistorySelectAll");
-          const totalCount = qrPaymentHistory.length;
+          const visibleEntries = getFilteredQrPaymentHistory();
+          const totalCount = visibleEntries.length;
           const selectedCount = selectedQrHistoryIds.size;
 
           if (qrHistoryTableWrapEl) {
@@ -8186,6 +9374,7 @@
           }
 
           if (selectAllEl) {
+            selectAllEl.disabled = totalCount === 0;
             selectAllEl.checked = totalCount > 0 && selectedCount === totalCount;
             selectAllEl.indeterminate = selectedCount > 0 && selectedCount < totalCount;
           }
@@ -8198,8 +9387,9 @@
         }
 
         function renderQrHistoryModal(summaryObj) {
+          const sweptCount = runQrAutoMarkPaidSweep(false);
           pruneSelectedQrHistoryIds();
-          const data = summaryObj || saveQrHistorySummaryToStorage();
+          const data = sweptCount > 0 || !summaryObj ? saveQrHistorySummaryToStorage() : summaryObj;
           if (qrHistorySavedMetaEl) {
             qrHistorySavedMetaEl.textContent =
               "Saved to LocalStorage (" + data.exportedText + ") · " + data.count + " payment" + (data.count === 1 ? "" : "s");
@@ -8210,6 +9400,9 @@
           if (qrExportSummaryPreEl) {
             qrExportSummaryPreEl.textContent = data.summaryText;
           }
+          renderQrDueReminderBar();
+          renderQrAutoPaidPanel();
+          renderQrHistoryStatusFilterBar();
           if (!qrHistoryTableWrapEl) return;
 
           if (qrPaymentHistory.length === 0) {
@@ -8217,6 +9410,25 @@
             syncQrHistorySelectionUi();
             qrHistoryTableWrapEl.innerHTML =
               '<div class="empty-state" style="padding: 18px;">No recent QR payments logged yet. Click &ldquo;Add Current Payment&rdquo; below to record one.</div>';
+            return;
+          }
+
+          const visibleEntries = getFilteredQrPaymentHistory();
+          if (visibleEntries.length === 0) {
+            selectedQrHistoryIds.clear();
+            syncQrHistorySelectionUi();
+            const filterParts = [];
+            if (qrHistoryStatusFilter !== "all") {
+              filterParts.push(qrHistoryStatusFilter === "pending" ? "Pending" : "Paid");
+            }
+            if (qrHistoryNoteTagFilter) {
+              filterParts.push("tag " + qrHistoryNoteTagFilter);
+            }
+            qrHistoryTableWrapEl.innerHTML =
+              '<div class="empty-state" style="padding: 18px; display: flex; flex-direction: column; align-items: center; gap: 10px;">' +
+              "<span>No QR payments match " + escapeHtml(filterParts.join(" + ") || "the current filter") + ".</span>" +
+              '<button type="button" class="btn btn-secondary btn-sm js-qrhist-reset-filter">Show All Payments</button>' +
+              "</div>";
             return;
           }
 
@@ -8244,13 +9456,13 @@
               })
               .join("");
 
-          const hasAnyPending = qrPaymentHistory.some(function (item) {
+          const hasAnyPending = visibleEntries.some(function (item) {
             return item.status !== "paid";
           });
 
           qrHistoryTableWrapEl.innerHTML =
             '<table class="history-table"><thead><tr>' +
-            '<th style="width: 36px; text-align: center;"><input type="checkbox" id="qrHistorySelectAll" class="qr-hist-checkbox" aria-label="Select all QR payment entries" title="Select all" /></th>' +
+            '<th style="width: 36px; text-align: center;"><input type="checkbox" id="qrHistorySelectAll" class="qr-hist-checkbox" aria-label="Select all visible QR payment entries" title="Select all visible" /></th>' +
             "<th>Biller &amp; Account</th>" +
             "<th>Channel</th>" +
             "<th>When</th>" +
@@ -8258,17 +9470,18 @@
             '<th><div class="qr-status-th"><span>Status</span><button type="button" id="markAllQrPaidBtn" class="qr-mark-all-paid-btn"' +
             (hasAnyPending ? "" : " disabled") +
             ' title="' +
-            (hasAnyPending ? "Mark all visible entries as Paid" : "All visible entries are already Paid") +
+            (hasAnyPending ? "Mark all visible entries as Paid" : "No pending entries in current view") +
             '">Mark All Paid</button></div></th>' +
             '<th class="col-num">Amount</th>' +
             "<th></th>" +
             "</tr></thead><tbody>" +
-            qrPaymentHistory
+            visibleEntries
               .map(function (item) {
                 const isSelected = selectedQrHistoryIds.has(item.id);
                 const isPaid = item.status === "paid";
                 const catMeta = getQrBillerCategory(item);
                 const dueInfo = getQrDueDateInfo(item.dueDate, item.status);
+                const hasAutoPaidRule = isAutoMarkPaidBiller(item.biller, item.fullRef);
                 const rowClasses = [];
                 if (isSelected) rowClasses.push("is-selected");
                 if (isPaid) rowClasses.push("is-paid");
@@ -8281,10 +9494,11 @@
                     escapeHtml(dueInfo.badgeText) +
                     "</span></div>"
                   : '<span style="font-size: 12px; color: var(--text-muted);">—</span>';
+                const noteSectionHtml = buildQrEntryNoteSectionHtml(item);
                 return (
                   '<tr data-qrhist-id="' + escapeHtml(item.id) + '"' + (rowClasses.length ? ' class="' + rowClasses.join(" ") + '"' : "") + ">" +
                   '<td style="text-align: center;"><input type="checkbox" class="qr-hist-checkbox js-qrhist-check" value="' + escapeHtml(item.id) + '" aria-label="Select ' + escapeHtml(item.biller) + ' payment entry"' + (isSelected ? " checked" : "") + " /></td>" +
-                  '<td><div class="qr-biller-head"><strong>' + escapeHtml(item.biller) + '</strong><span class="qr-cat-tag ' + escapeHtml(catMeta.cls) + '" title="Category: ' + escapeHtml(catMeta.label) + '"><span class="qr-cat-dot" aria-hidden="true"></span><span>' + escapeHtml(catMeta.label) + '</span></span></div><div class="meta-line" style="font-size:11px;">' + escapeHtml(item.accountNumber) + "</div></td>" +
+                  '<td><div class="qr-biller-head"><strong>' + escapeHtml(item.biller) + '</strong><span class="qr-cat-tag ' + escapeHtml(catMeta.cls) + '" title="Category: ' + escapeHtml(catMeta.label) + '"><span class="qr-cat-dot" aria-hidden="true"></span><span>' + escapeHtml(catMeta.label) + "</span></span>" + (hasAutoPaidRule ? '<span class="qr-autopaid-tag" title="Auto-Mark Paid enabled on due date">Auto-Paid</span>' : "") + '</div><div class="meta-line" style="font-size:11px;">' + escapeHtml(item.accountNumber) + "</div>" + noteSectionHtml + "</td>" +
                   "<td>" + escapeHtml(item.channel) + "</td>" +
                   '<td style="font-size:12px; color: var(--text-muted);">' + escapeHtml(item.dateText) + "</td>" +
                   "<td>" + dueCellHtml + "</td>" +
@@ -8331,6 +9545,7 @@
         }
 
         function closeQrHistoryModal() {
+          editingNoteQrHistoryId = null;
           if (qrHistoryModalEl) {
             qrHistoryModalEl.classList.remove("open");
           }
@@ -8349,6 +9564,10 @@
 
         document.getElementById("logCurrentQrPaymentBtn").addEventListener("click", function () {
           const entry = recordQrPaymentEntry(true);
+          if (qrHistoryPaymentNotesInputEl) {
+            qrHistoryPaymentNotesInputEl.value = "";
+            updateQrNotesCharCount();
+          }
           const summaryObj = saveQrHistorySummaryToStorage();
           renderQrHistoryModal(summaryObj);
           showToast("Added " + entry.biller + " (" + peso(entry.amount) + ") to QR history");
@@ -8380,14 +9599,44 @@
           showToast("Downloaded QR payment history summary");
         });
 
+        if (qrHistoryStatusFilterBarEl) {
+          qrHistoryStatusFilterBarEl.addEventListener("click", function (e) {
+            const btn = e.target.closest("[data-qr-status-filter]");
+            if (!btn) return;
+            const nextFilter = btn.getAttribute("data-qr-status-filter");
+            if (nextFilter !== "all" && nextFilter !== "pending" && nextFilter !== "paid") return;
+            if (qrHistoryStatusFilter === nextFilter) return;
+            qrHistoryStatusFilter = nextFilter;
+            editingNoteQrHistoryId = null;
+            selectedQrHistoryIds.clear();
+            renderQrHistoryModal();
+          });
+        }
+
+        if (qrHistoryTagFilterBarEl) {
+          qrHistoryTagFilterBarEl.addEventListener("click", function (e) {
+            const btn = e.target.closest("[data-qr-note-tag]");
+            if (!btn) return;
+            const clickedTag = btn.getAttribute("data-qr-note-tag") || "";
+            const nextTag = !clickedTag || qrHistoryNoteTagFilter === clickedTag ? "" : clickedTag;
+            qrHistoryNoteTagFilter = nextTag;
+            editingNoteQrHistoryId = null;
+            selectedQrHistoryIds.clear();
+            renderQrHistoryModal();
+          });
+        }
+
         qrHistoryTableWrapEl.addEventListener("change", function (e) {
           if (e.target && e.target.id === "qrHistorySelectAll") {
+            const visibleEntries = getFilteredQrPaymentHistory();
             if (e.target.checked) {
-              qrPaymentHistory.forEach(function (item) {
+              visibleEntries.forEach(function (item) {
                 selectedQrHistoryIds.add(item.id);
               });
             } else {
-              selectedQrHistoryIds.clear();
+              visibleEntries.forEach(function (item) {
+                selectedQrHistoryIds.delete(item.id);
+              });
             }
             syncQrHistorySelectionUi();
             return;
@@ -8407,6 +9656,7 @@
             const entry = qrPaymentHistory.find(function (item) { return item.id === id; });
             if (!entry) return;
             entry.status = e.target.checked ? "paid" : "pending";
+            entry.manualStatusOverride = entry.status === "pending";
             const summaryObj = saveQrHistorySummaryToStorage();
             renderQrHistoryModal(summaryObj);
             showToast(
@@ -8424,10 +9674,28 @@
         });
 
         qrHistoryTableWrapEl.addEventListener("click", function (e) {
+          const resetFilterBtn = e.target.closest(".js-qrhist-reset-filter");
+          if (resetFilterBtn) {
+            qrHistoryStatusFilter = "all";
+            qrHistoryNoteTagFilter = "";
+            selectedQrHistoryIds.clear();
+            renderQrHistoryModal();
+            return;
+          }
+          const inlineTagBtn = e.target.closest(".js-qrhist-tag-btn");
+          if (inlineTagBtn) {
+            const tag = inlineTagBtn.getAttribute("data-qr-note-tag") || "";
+            if (!tag) return;
+            qrHistoryNoteTagFilter = qrHistoryNoteTagFilter === tag ? "" : tag;
+            editingNoteQrHistoryId = null;
+            selectedQrHistoryIds.clear();
+            renderQrHistoryModal();
+            return;
+          }
           const markAllBtn = e.target.closest("#markAllQrPaidBtn");
           if (markAllBtn) {
             let updatedCount = 0;
-            qrPaymentHistory.forEach(function (item) {
+            getFilteredQrPaymentHistory().forEach(function (item) {
               if (item.status !== "paid") {
                 item.status = "paid";
                 updatedCount += 1;
@@ -8446,16 +9714,135 @@
             }
             return;
           }
+          const editNoteBtn = e.target.closest(".js-qrhist-edit-note");
+          if (editNoteBtn) {
+            const row = editNoteBtn.closest("[data-qrhist-id]");
+            if (!row) return;
+            editingNoteQrHistoryId = row.getAttribute("data-qrhist-id");
+            renderQrHistoryModal();
+            const inlineArea = qrHistoryTableWrapEl.querySelector(".js-qrhist-note-textarea");
+            if (inlineArea) inlineArea.focus();
+            return;
+          }
+          const saveNoteBtn = e.target.closest(".js-qrhist-save-note");
+          if (saveNoteBtn) {
+            const row = saveNoteBtn.closest("[data-qrhist-id]");
+            if (!row) return;
+            const id = row.getAttribute("data-qrhist-id");
+            const entry = qrPaymentHistory.find(function (item) { return item.id === id; });
+            const inlineArea = row.querySelector(".js-qrhist-note-textarea");
+            if (entry && inlineArea) {
+              entry.notes = inlineArea.value.trim().slice(0, 240);
+            }
+            editingNoteQrHistoryId = null;
+            const summaryObj = saveQrHistorySummaryToStorage();
+            renderQrHistoryModal(summaryObj);
+            if (entry) {
+              showToast("Updated payment note for " + entry.biller);
+            }
+            return;
+          }
+          const cancelNoteBtn = e.target.closest(".js-qrhist-cancel-note");
+          if (cancelNoteBtn) {
+            editingNoteQrHistoryId = null;
+            renderQrHistoryModal();
+            return;
+          }
           const delBtn = e.target.closest(".js-qrhist-del");
           if (!delBtn) return;
           const row = delBtn.closest("[data-qrhist-id]");
           if (!row) return;
           const id = row.getAttribute("data-qrhist-id");
+          if (editingNoteQrHistoryId === id) {
+            editingNoteQrHistoryId = null;
+          }
           selectedQrHistoryIds.delete(id);
           qrPaymentHistory = qrPaymentHistory.filter(function (item) { return item.id !== id; });
           const summaryObj = saveQrHistorySummaryToStorage();
           renderQrHistoryModal(summaryObj);
         });
+
+        if (qrDueEnableNotifBtnEl) {
+          qrDueEnableNotifBtnEl.addEventListener("click", function () {
+            if (typeof window === "undefined" || !("Notification" in window)) {
+              showToast("Browser notifications are not supported in this browser");
+              return;
+            }
+            window.Notification.requestPermission()
+              .then(function (perm) {
+                renderQrDueReminderBar();
+                if (perm === "granted") {
+                  showToast("Browser alerts enabled for QR payment deadlines");
+                  checkQrDueDateReminders(true);
+                } else {
+                  showToast("Browser notifications blocked — on-screen reminders remain active");
+                }
+              })
+              .catch(function () {
+                renderQrDueReminderBar();
+              });
+          });
+        }
+
+        if (qrDueCheckNowBtnEl) {
+          qrDueCheckNowBtnEl.addEventListener("click", function () {
+            const supportsNotif = typeof window !== "undefined" && "Notification" in window;
+            if (supportsNotif && window.Notification.permission === "default") {
+              window.Notification.requestPermission()
+                .then(function () {
+                  checkQrDueDateReminders(true);
+                })
+                .catch(function () {
+                  checkQrDueDateReminders(true);
+                });
+            } else {
+              checkQrDueDateReminders(true);
+            }
+          });
+        }
+
+        if (qrAutoPaidListEl) {
+          qrAutoPaidListEl.addEventListener("change", function (e) {
+            if (!e.target || !e.target.classList.contains("js-qr-autopaid-toggle")) return;
+            const billerName = e.target.value;
+            const enabled = !!e.target.checked;
+            setAutoMarkPaidBillerEnabled(billerName, enabled);
+            if (enabled) {
+              runQrAutoMarkPaidSweep(true);
+            }
+            const summaryObj = saveQrHistorySummaryToStorage();
+            renderQrHistoryModal(summaryObj);
+            showToast(
+              (enabled ? "Enabled" : "Disabled") + " Auto-Mark Paid for " + billerName
+            );
+          });
+
+          qrAutoPaidListEl.addEventListener("click", function (e) {
+            const delBtn = e.target.closest(".js-qr-autopaid-del");
+            if (!delBtn) return;
+            e.preventDefault();
+            e.stopPropagation();
+            const billerName = delBtn.getAttribute("data-biller");
+            if (!billerName) return;
+            setAutoMarkPaidBillerEnabled(billerName, false);
+            renderQrHistoryModal();
+            showToast("Removed Auto-Mark Paid rule for " + billerName);
+          });
+        }
+
+        if (qrAutoPaidFormEl && qrAutoPaidInputEl) {
+          qrAutoPaidFormEl.addEventListener("submit", function (e) {
+            e.preventDefault();
+            const name = qrAutoPaidInputEl.value.trim();
+            if (!name) return;
+            setAutoMarkPaidBillerEnabled(name, true);
+            qrAutoPaidInputEl.value = "";
+            runQrAutoMarkPaidSweep(true);
+            const summaryObj = saveQrHistorySummaryToStorage();
+            renderQrHistoryModal(summaryObj);
+            showToast("Auto-Mark Paid enabled for recurring biller: " + name);
+          });
+        }
 
         if (deleteSelectedQrHistoryBtnEl) {
           deleteSelectedQrHistoryBtnEl.addEventListener("click", function () {
@@ -8616,14 +10003,17 @@
           openPdfSlipModal(true);
         });
 
-        document.getElementById("printPdfSlipBtn").addEventListener("click", function () {
+        function triggerSlipPrint() {
           populatePaymentSlip();
           try {
             window.print();
           } catch (err) {
-            showToast("Use your browser Print menu to save as PDF");
+            showToast("Use your browser Print menu to print or save as PDF");
           }
-        });
+        }
+
+        document.getElementById("printPdfSlipBtn").addEventListener("click", triggerSlipPrint);
+        document.getElementById("printSlipBtn").addEventListener("click", triggerSlipPrint);
 
         document.getElementById("closePdfSlipBtn").addEventListener("click", closePdfSlipModal);
         document.getElementById("cancelPdfSlipBtn").addEventListener("click", closePdfSlipModal);
@@ -9386,8 +10776,28 @@
 
         /* Initial Render */
         saveQrPrefs();
+        runQrAutoMarkPaidSweep(true);
         renderAll(false);
         renderHistory();
+        checkQrDueDateReminders(false);
+
+        setInterval(function () {
+          const swept = runQrAutoMarkPaidSweep(true);
+          if (swept > 0 && qrHistoryModalEl && qrHistoryModalEl.classList.contains("open")) {
+            renderQrHistoryModal();
+          }
+          checkQrDueDateReminders(false);
+        }, 3600000);
+
+        document.addEventListener("visibilitychange", function () {
+          if (document.visibilityState === "visible") {
+            const swept = runQrAutoMarkPaidSweep(true);
+            if (swept > 0 && qrHistoryModalEl && qrHistoryModalEl.classList.contains("open")) {
+              renderQrHistoryModal();
+            }
+            checkQrDueDateReminders(false);
+          }
+        });
       })();
     </script>
   </body>
